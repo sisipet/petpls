@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PETPLS 工作台</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#D4956A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{--sidebar-bg:#F5E6D3;--sidebar-active:#D4956A;--sidebar-hover:rgba(212,149,106,0.12);--sidebar-text:#5C4A3D;--sidebar-muted:#A08B7A;--sidebar-section:#D4956A;--main-bg:#F0F0F0;--card-bg:#FFFFFF;--card-border:#E8E0D8;--text-primary:#3D3D3D;--text-secondary:#7A7A7A;--text-muted:#A0A0A0;--accent-orange:#D4956A;--accent-blue:#7BA3C4;--accent-blue-light:#B8D4E8;--success:#5AAE5A;--danger:#C97B7B;--shadow:rgba(0,0,0,0.06);--chart-orange:#E8A87C;--chart-blue:#A0C4E8;}*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;background:var(--main-bg);color:var(--text-primary);height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;}.app-container{display:flex;height:100vh;width:100vw;}.sidebar{width:240px;background:var(--sidebar-bg);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;flex-shrink:0;transition:transform 0.3s ease;}.sidebar-header{padding:24px 20px 16px;display:flex;align-items:center;gap:12px;}.logo-icon{width:44px;height:44px;background:var(--accent-orange);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;flex-shrink:0;}.logo-text h1{font-size:18px;font-weight:700;color:var(--sidebar-text);letter-spacing:-0.2px;line-height:1.3;}.logo-text p{font-size:12px;color:var(--sidebar-muted);margin-top:1px;}.sidebar-nav{padding:8px 0;flex:1;}.nav-section{margin-bottom:4px;}.nav-section-title{font-size:11px;font-weight:600;color:var(--sidebar-section);text-transform:uppercase;letter-spacing:1px;padding:10px 20px 4px;}.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;margin:2px 12px;border-radius:10px;cursor:pointer;transition:all 0.2s ease;font-size:14px;color:var(--sidebar-text);text-decoration:none;user-select:none;}.nav-item:hover{background:var(--sidebar-hover);}.nav-item.active{background:var(--sidebar-active);color:white;}.nav-item .icon{font-size:16px;width:22px;text-align:center;flex-shrink:0;}.main-content{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--main-bg);}.top-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:var(--main-bg);flex-shrink:0;}.menu-toggle{display:none;font-size:22px;cursor:pointer;padding:4px;color:var(--text-primary);}.page-title-section{display:flex;align-items:center;gap:8px;}.page-title{font-size:16px;font-weight:600;color:var(--text-secondary);}.page-title strong{color:var(--text-primary);font-weight:700;}.date-badge{background:var(--sidebar-bg);color:var(--sidebar-text);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:1px solid var(--card-border);}.content-area{flex:1;overflow-y:auto;padding:0 24px 24px;}.card{background:var(--card-bg);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px var(--shadow);border:1px solid var(--card-border);}.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}.card-title{font-size:15px;font-weight:600;color:var(--text-primary);}.card-action{font-size:13px;color:var(--accent-blue);cursor:pointer;font-weight:500;}.card-action:hover{text-decoration:underline;}.hero-card{background:var(--card-bg);border-radius:16px;padding:24px 20px;margin-bottom:16px;box-shadow:0 2px 8px var(--shadow);border:1px solid var(--card-border);display:flex;align-items:center;gap:20px;}.hero-icon{width:48px;height:48px;border-radius:12px;background:var(--sidebar-bg);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}.hero-info{flex:1;}.hero-label{font-size:13px;color:var(--text-secondary);margin-bottom:4px;}.hero-amount{font-size:28px;font-weight:700;color:var(--success);line-height:1.2;}.hero-amount.negative{color:var(--danger);}.hero-sub{font-size:12px;color:var(--text-muted);margin-top:2px;}.hero-change{text-align:right;flex-shrink:0;}.hero-change-value{font-size:14px;font-weight:600;color:var(--success);}.hero-change-value.negative{color:var(--danger);}.hero-change-label{font-size:11px;color:var(--text-muted);margin-top:2px;}.chart-card{background:var(--card-bg);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px var(--shadow);border:1px solid var(--card-border);}.chart-header{display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:14px;font-weight:600;color:var(--text-primary);}.chart-header .icon{font-size:16px;}.chart-container{height:160px;position:relative;display:flex;align-items:flex-end;justify-content:center;gap:60px;padding:0 20px 30px;}.chart-bar-group{display:flex;flex-direction:column;align-items:center;gap:8px;}.chart-bar-wrapper{display:flex;align-items:flex-end;gap:6px;height:100px;}.chart-bar{width:36px;border-radius:6px 6px 0 0;transition:height 0.5s ease;position:relative;}.chart-bar.orange{background:var(--chart-orange);}.chart-bar.blue{background:var(--chart-blue);}.chart-bar-label{font-size:12px;color:var(--text-secondary);font-weight:500;}.chart-bar-value{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;color:var(--text-primary);white-space:nowrap;}.chart-legend{display:flex;justify-content:center;gap:20px;margin-top:12px;}.chart-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);}.chart-legend-dot{width:10px;height:10px;border-radius:3px;}.chart-legend-dot.orange{background:var(--chart-orange);}.chart-legend-dot.blue{background:var(--chart-blue);}.trend-chart-card{background:var(--card-bg);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px var(--shadow);border:1px solid var(--card-border);}.trend-chart-container{position:relative;height:180px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:20px 8px 28px;border-bottom:1px solid var(--card-border);}.trend-bar-group{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;height:100%;justify-content:flex-end;position:relative;}.trend-bar{width:100%;max-width:40px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--chart-orange) 0%,rgba(232,168,124,0.4) 100%);transition:height 0.5s ease;position:relative;min-height:4px;}.trend-bar.today{background:linear-gradient(180deg,var(--accent-orange) 0%,rgba(212,149,106,0.4) 100%);}.trend-bar-value{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;color:var(--text-primary);white-space:nowrap;opacity:0;transition:opacity 0.2s;}.trend-bar-group:hover .trend-bar-value{opacity:1;}.trend-bar-label{font-size:11px;color:var(--text-muted);position:absolute;bottom:-22px;}.trend-bar-label.today{color:var(--accent-orange);font-weight:600;}.mini-stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px;}.mini-stat-card{background:var(--card-bg);border-radius:14px;padding:16px;box-shadow:0 2px 8px var(--shadow);border:1px solid var(--card-border);}.mini-stat-label{font-size:12px;color:var(--text-muted);margin-bottom:6px;}.mini-stat-value{font-size:22px;font-weight:700;color:var(--text-primary);}.mini-stat-value.positive{color:var(--success);}.mini-stat-value.negative{color:var(--danger);}.form-group{margin-bottom:14px;}.form-label{display:block;font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px;}.form-input{width:100%;padding:12px 14px;border:1px solid var(--card-border);border-radius:10px;font-size:14px;background:#FAFAFA;color:var(--text-primary);transition:all 0.2s ease;font-family:inherit;}.form-input:focus{outline:none;border-color:var(--accent-orange);box-shadow:0 0 0 3px rgba(212,149,106,0.15);background:#fff;}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}.form-row.single{grid-template-columns:1fr;}.form-input-date{-webkit-appearance:none;appearance:none;min-height:44px;}.btn{padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s ease;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:6px;}.btn-primary{background:var(--accent-orange);color:white;}.btn-primary:hover{background:#C8875A;transform:translateY(-1px);}.btn-secondary{background:var(--accent-blue-light);color:var(--accent-blue);}.btn-secondary:hover{background:#A8C8E0;}.btn-danger{background:#F5D5D5;color:var(--danger);}.btn-outline{background:transparent;color:var(--text-secondary);border:1px solid var(--card-border);}.btn-outline:hover{background:var(--sidebar-bg);}.btn-group{display:flex;gap:10px;margin-top:16px;}.tab-switcher{display:flex;gap:8px;margin-bottom:16px;}.tab-switcher .btn{flex:1;margin:0;}.data-table{width:100%;border-collapse:collapse;font-size:13px;}.data-table th{text-align:left;padding:10px 12px;font-weight:600;color:var(--text-secondary);border-bottom:2px solid var(--card-border);font-size:12px;text-transform:uppercase;letter-spacing:0.5px;}.data-table td{padding:12px;border-bottom:1px solid var(--card-border);color:var(--text-primary);}.data-table tr:hover td{background:rgba(212,149,106,0.04);}.amount-positive{color:var(--success);font-weight:600;}.amount-negative{color:var(--danger);font-weight:600;}.amount-net{color:var(--accent-blue);font-weight:600;}.deal-card{background:var(--card-bg);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px var(--shadow);border:1px solid var(--card-border);border-left:4px solid var(--accent-orange);}.deal-card.blue{border-left-color:var(--accent-blue);}.deal-store{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:8px;}.deal-store .store-icon{font-size:20px;}.deal-content{font-size:13px;color:var(--text-secondary);line-height:1.7;}.deal-content strong{color:var(--text-primary);}.deal-tag{display:inline-block;background:var(--sidebar-bg);color:var(--sidebar-text);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;margin-top:8px;margin-right:6px;border:1px solid var(--card-border);}.deal-tag.blue{background:var(--accent-blue-light);color:var(--accent-blue);border-color:var(--accent-blue-light);}.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}.dashboard-card{background:var(--card-bg);border-radius:14px;padding:18px;box-shadow:0 2px 8px var(--shadow);border:1px solid var(--card-border);}.dashboard-card h3{font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}.dashboard-card .big-number{font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:4px;}.summary-list{list-style:none;margin-top:10px;}.summary-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--card-border);font-size:13px;}.summary-list li:last-child{border-bottom:none;}.summary-list .label{color:var(--text-secondary);}.summary-list .value{font-weight:600;}.sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:100;}@media (max-width:768px){.sidebar{position:fixed;left:0;top:0;bottom:0;z-index:200;transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.sidebar-overlay.active{display:block;}.menu-toggle{display:block;}.content-area{padding:0 16px 16px;}.form-row{grid-template-columns:1fr;}.form-row.single{grid-template-columns:1fr;}.mini-stats-row{grid-template-columns:repeat(2,1fr);}.dashboard-grid{grid-template-columns:1fr;}.chart-container{gap:30px;padding:0 10px 20px;}.trend-chart-container{gap:4px;padding:20px 4px 28px;}.trend-bar{max-width:28px;}}@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}.fade-in{animation:fadeIn 0.3s ease;}.data-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}.data-actions .btn{flex:1;min-width:140px;}.toast-container{position:fixed;bottom:24px;right:24px;z-index:1000;display:flex;flex-direction:column;gap:8px;}.toast{background:var(--text-primary);color:white;padding:12px 20px;border-radius:10px;font-size:14px;box-shadow:0 4px 16px rgba(0,0,0,0.15);animation:fadeIn 0.3s ease;max-width:320px;}.toast.success{background:var(--success);}.toast.error{background:var(--danger);}::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--card-border);border-radius:3px;}</style>
+</head>
+<body>
+<div class="app-container">
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<div class="logo-icon">🐾</div>
+<div class="logo-text">
+<h1>PETPLS 工作台</h1>
+<p>店铺收益记录系统</p>
+</div>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section">
+<div class="nav-section-title">猫房线下</div>
+<a class="nav-item" data-page="cat-offline-income" onclick="showPage('cat-offline-income')">
+<span class="icon">🐱</span> 每日进账
+</a>
+<a class="nav-item" data-page="cat-offline-expense" onclick="showPage('cat-offline-expense')">
+<span class="icon">📤</span> 每月出账
+</a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">销售线下</div>
+<a class="nav-item" data-page="sales-offline-income" onclick="showPage('sales-offline-income')">
+<span class="icon">🛒</span> 每日进账
+</a>
+<a class="nav-item" data-page="sales-offline-stock" onclick="showPage('sales-offline-stock')">
+<span class="icon">📦</span> 每月进货
+</a>
+<a class="nav-item" data-page="sales-offline-net" onclick="showPage('sales-offline-net')">
+<span class="icon">💰</span> 每日净收
+</a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">猫房线上</div>
+<a class="nav-item" data-page="cat-online-income" onclick="showPage('cat-online-income')">
+<span class="icon">🌐</span> 每日进账
+</a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">销售线上</div>
+<a class="nav-item" data-page="sales-online-income" onclick="showPage('sales-online-income')">
+<span class="icon">📱</span> 每日进账
+</a>
+<a class="nav-item" data-page="sales-online-net" onclick="showPage('sales-online-net')">
+<span class="icon">💵</span> 每日净收
+</a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">员工工资</div>
+<a class="nav-item" data-page="salary" onclick="showPage('salary')">
+<span class="icon">👥</span> 工资记录
+</a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">店租支出</div>
+<a class="nav-item" data-page="rent-store1" onclick="showPage('rent-store1')">
+<span class="icon">🏠</span> 一店
+</a>
+<a class="nav-item" data-page="rent-store2" onclick="showPage('rent-store2')">
+<span class="icon">🏪</span> 二店
+</a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">情报</div>
+<a class="nav-item" data-page="deals" onclick="showPage('deals')">
+<span class="icon">📰</span> 折扣活动汇总
+</a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">财务</div>
+<a class="nav-item" data-page="dashboard" onclick="showPage('dashboard')">
+<span class="icon">📋</span> 总日收入
+</a>
+<a class="nav-item" data-page="monthly" onclick="showPage('monthly')">
+<span class="icon">📊</span> 月收支总览
+</a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">设置</div>
+<a class="nav-item" data-page="data-manage" onclick="showPage('data-manage')">
+<span class="icon">💾</span> 数据管理
+</a>
+</div>
+</nav>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<main class="main-content">
+<div class="top-bar">
+<span class="menu-toggle" onclick="toggleSidebar()">☰</span>
+<div class="page-title-section">
+<span class="page-title" id="pageTitle"><strong>数据总览</strong></span>
+</div>
+<span class="date-badge" id="currentDate">2026-08-06</span>
+</div>
+<div class="content-area" id="contentArea">
+</div>
+</main>
+</div>
+<div class="toast-container" id="toastContainer"></div>
+<script>const store = {
+catOfflineIncome: JSON.parse(localStorage.getItem('catOfflineIncome') || '[]'),
+catOfflineExpense: JSON.parse(localStorage.getItem('catOfflineExpense') || '[]'),
+salesOfflineIncome: JSON.parse(localStorage.getItem('salesOfflineIncome') || '[]'),
+salesOfflineStock: JSON.parse(localStorage.getItem('salesOfflineStock') || '[]'),
+salesOfflineNet: JSON.parse(localStorage.getItem('salesOfflineNet') || '[]'),
+catOnlineIncome: JSON.parse(localStorage.getItem('catOnlineIncome') || '[]'),
+salesOnlineIncome: JSON.parse(localStorage.getItem('salesOnlineIncome') || '[]'),
+salesOnlineNet: JSON.parse(localStorage.getItem('salesOnlineNet') || '[]'),
+salary: JSON.parse(localStorage.getItem('salary') || '[]'),
+rentStore1: JSON.parse(localStorage.getItem('rentStore1') || '[]'),
+rentStore2: JSON.parse(localStorage.getItem('rentStore2') || '[]'),
+};
+const pageTitles = {
+'dashboard': '<strong>总日收入</strong>',
+'monthly': '<strong>月收支总览</strong>',
+'cat-offline-income': '猫房线下 <strong>每日进账</strong>',
+'cat-offline-expense': '猫房线下 <strong>每月出账</strong>',
+'sales-offline-income': '销售线下 <strong>每日进账</strong>',
+'sales-offline-stock': '销售线下 <strong>每月进货</strong>',
+'sales-offline-net': '销售线下 <strong>每日净收</strong>',
+'cat-online-income': '猫房线上 <strong>每日进账</strong>',
+'sales-online-income': '销售线上 <strong>每日进账</strong>',
+'sales-online-net': '销售线上 <strong>每日净收</strong>',
+'salary': '<strong>员工工资</strong> 记录',
+'rent-store1': '<strong>一店</strong> 店租支出',
+'rent-store2': '<strong>二店</strong> 店租支出',
+'deals': '<strong>折扣活动</strong> 汇总',
+'data-manage': '<strong>数据管理</strong>'
+};
+const storeKeys = {
+'cat-offline-income': 'catOfflineIncome',
+'cat-offline-expense': 'catOfflineExpense',
+'sales-offline-income': 'salesOfflineIncome',
+'sales-offline-stock': 'salesOfflineStock',
+'sales-offline-net': 'salesOfflineNet',
+'cat-online-income': 'catOnlineIncome',
+'sales-online-income': 'salesOnlineIncome',
+'sales-online-net': 'salesOnlineNet',
+'salary': 'salary',
+'rent-store1': 'rentStore1',
+'rent-store2': 'rentStore2'
+};
+let currentPage = 'dashboard';
+document.addEventListener('DOMContentLoaded', () => {
+document.getElementById('currentDate').textContent = new Date().toISOString().split('T')[0];
+showPage('dashboard');
+});
+function toggleSidebar() {
+document.getElementById('sidebar').classList.toggle('open');
+document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+function showPage(page) {
+currentPage = page;
+document.getElementById('pageTitle').innerHTML = pageTitles[page] || '<strong>工作台</strong>';
+document.querySelectorAll('.nav-item').forEach(item => {
+item.classList.remove('active');
+if (item.dataset.page === page) item.classList.add('active');
+});
+if (window.innerWidth <= 768) {
+document.getElementById('sidebar').classList.remove('open');
+document.getElementById('sidebarOverlay').classList.remove('active');
+}
+const content = document.getElementById('contentArea');
+content.innerHTML = '';
+content.classList.remove('fade-in');
+void content.offsetWidth;
+content.classList.add('fade-in');
+switch(page) {
+case 'dashboard': renderDashboard(content); break;
+case 'monthly': renderMonthly(content); break;
+case 'deals': renderDeals(content); break;
+case 'data-manage': renderDataManage(content); break;
+default: renderDataEntry(content, page);
+}
+}
+function renderDashboard(container) {
+const today = new Date().toISOString().split('T')[0];
+const yesterday = getYesterday(today);
+const todayCatOffline = sumByDate(store.catOfflineIncome, today);
+const todaySalesOffline = sumByDate(store.salesOfflineIncome, today);
+const todayCatOnline = sumByDate(store.catOnlineIncome, today);
+const todaySalesOnline = sumByDate(store.salesOnlineIncome, today);
+const yestCatOffline = sumByDate(store.catOfflineIncome, yesterday);
+const yestSalesOffline = sumByDate(store.salesOfflineIncome, yesterday);
+const yestCatOnline = sumByDate(store.catOnlineIncome, yesterday);
+const yestSalesOnline = sumByDate(store.salesOnlineIncome, yesterday);
+const totalIncome = todayCatOffline + todaySalesOffline + todayCatOnline + todaySalesOnline;
+const yestTotal = yestCatOffline + yestSalesOffline + yestCatOnline + yestSalesOnline;
+const change = yestTotal > 0 ? ((totalIncome - yestTotal) / yestTotal * 100) : 0;
+const changeText = change >= 0 ? `▲ ${change.toFixed(0)}%` : `▼ ${Math.abs(change).toFixed(0)}%`;
+const totalRecords = store.catOfflineIncome.filter(r => r.date === today).length
++ store.salesOfflineIncome.filter(r => r.date === today).length
++ store.catOnlineIncome.filter(r => r.date === today).length
++ store.salesOnlineIncome.filter(r => r.date === today).length;
+container.innerHTML = `
+<div class="hero-card">
+<div class="hero-icon">📅</div>
+<div class="hero-info">
+<div class="hero-label">今日 每日进账 <span style="color:var(--text-muted);font-weight:400;">${formatDate(today)}</span></div>
+<div class="hero-amount">$${totalIncome.toFixed(2)}</div>
+<div class="hero-sub">金额</div>
+</div>
+<div class="hero-change">
+<div class="hero-change-value ${change >= 0 ? '' : 'negative'}">${changeText}</div>
+<div class="hero-change-label">较前一天</div>
+</div>
+</div>
+${renderCompareChart(totalIncome, yestTotal, today, yesterday)}
+${renderTrendChart([...store.catOfflineIncome, ...store.salesOfflineIncome, ...store.catOnlineIncome, ...store.salesOnlineIncome], '近7天总收入趋势')}
+<div class="mini-stats-row">
+<div class="mini-stat-card">
+<div class="mini-stat-label">累计金额</div>
+<div class="mini-stat-value positive">$${totalIncome.toFixed(2)}</div>
+</div>
+<div class="mini-stat-card">
+<div class="mini-stat-label">记录数</div>
+<div class="mini-stat-value">${totalRecords}</div>
+</div>
+</div>
+<div class="dashboard-grid">
+<div class="dashboard-card">
+<h3>🐱 猫房线下</h3>
+<div class="big-number">$${todayCatOffline.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);">今日进账</div>
+</div>
+<div class="dashboard-card">
+<h3>🛒 销售线下</h3>
+<div class="big-number">$${todaySalesOffline.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);">今日进账</div>
+</div>
+<div class="dashboard-card">
+<h3>🌐 猫房线上</h3>
+<div class="big-number">$${todayCatOnline.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);">今日进账</div>
+</div>
+<div class="dashboard-card">
+<h3>📱 销售线上</h3>
+<div class="big-number">$${todaySalesOnline.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);">今日进账</div>
+</div>
+</div>
+`;
+}
+function renderMonthly(container) {
+const today = new Date().toISOString().split('T')[0];
+const thisMonth = today.substring(0, 7);
+const monthCatOffline = sumByMonth(store.catOfflineIncome, thisMonth);
+const monthCatExpense = sumByMonth(store.catOfflineExpense, thisMonth);
+const monthSalesOffline = sumByMonth(store.salesOfflineIncome, thisMonth);
+const monthStock = sumByMonth(store.salesOfflineStock, thisMonth);
+const monthCatOnline = sumByMonth(store.catOnlineIncome, thisMonth);
+const monthSalesOnline = sumByMonth(store.salesOnlineIncome, thisMonth);
+const monthSalary = sumByMonth(store.salary, thisMonth);
+const monthRent = sumByMonth(store.rentStore1, thisMonth) + sumByMonth(store.rentStore2, thisMonth);
+const totalIncome = monthCatOffline + monthSalesOffline + monthCatOnline + monthSalesOnline;
+const totalExpense = monthCatExpense + monthStock + monthSalary + monthRent;
+const netProfit = totalIncome - totalExpense;
+const margin = totalIncome > 0 ? (netProfit / totalIncome * 100) : 0;
+container.innerHTML = `
+<div class="hero-card">
+<div class="hero-icon">📊</div>
+<div class="hero-info">
+<div class="hero-label">本月 收支总览 <span style="color:var(--text-muted);font-weight:400;">${thisMonth}</span></div>
+<div class="hero-amount ${netProfit >= 0 ? '' : 'negative'}">$${netProfit.toFixed(2)}</div>
+<div class="hero-sub">净利润</div>
+</div>
+<div class="hero-change">
+<div class="hero-change-value">${margin.toFixed(1)}%</div>
+<div class="hero-change-label">利润率</div>
+</div>
+</div>
+<div class="mini-stats-row">
+<div class="mini-stat-card">
+<div class="mini-stat-label">本月总收入</div>
+<div class="mini-stat-value positive">$${totalIncome.toFixed(2)}</div>
+</div>
+<div class="mini-stat-card">
+<div class="mini-stat-label">本月总支出</div>
+<div class="mini-stat-value negative">$${totalExpense.toFixed(2)}</div>
+</div>
+<div class="mini-stat-card">
+<div class="mini-stat-label">净利润</div>
+<div class="mini-stat-value ${netProfit >= 0 ? 'positive' : 'negative'}">$${netProfit.toFixed(2)}</div>
+</div>
+<div class="mini-stat-card">
+<div class="mini-stat-label">利润率</div>
+<div class="mini-stat-value" style="color:var(--accent-blue);">${margin.toFixed(1)}%</div>
+</div>
+</div>
+${renderTrendChart([...store.catOfflineIncome, ...store.salesOfflineIncome, ...store.catOnlineIncome, ...store.salesOnlineIncome], '近7天收入趋势')}
+<div class="dashboard-grid">
+<div class="dashboard-card">
+<h3>🐱 猫房线下</h3>
+<div class="big-number">$${monthCatOffline.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">本月进账</div>
+<ul class="summary-list">
+<li><span class="label">本月出账</span><span class="value amount-negative">$${monthCatExpense.toFixed(2)}</span></li>
+<li><span class="label">记录数</span><span class="value">${store.catOfflineIncome.length}</span></li>
+</ul>
+</div>
+<div class="dashboard-card">
+<h3>🛒 销售线下</h3>
+<div class="big-number">$${monthSalesOffline.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">本月进账</div>
+<ul class="summary-list">
+<li><span class="label">本月进货</span><span class="value amount-negative">$${monthStock.toFixed(2)}</span></li>
+<li><span class="label">记录数</span><span class="value">${store.salesOfflineIncome.length}</span></li>
+</ul>
+</div>
+<div class="dashboard-card">
+<h3>🌐 猫房线上</h3>
+<div class="big-number">$${monthCatOnline.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">本月进账</div>
+<ul class="summary-list">
+<li><span class="label">记录数</span><span class="value">${store.catOnlineIncome.length}</span></li>
+</ul>
+</div>
+<div class="dashboard-card">
+<h3>📱 销售线上</h3>
+<div class="big-number">$${monthSalesOnline.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">本月进账</div>
+<ul class="summary-list">
+<li><span class="label">记录数</span><span class="value">${store.salesOnlineIncome.length}</span></li>
+</ul>
+</div>
+<div class="dashboard-card">
+<h3>👥 员工工资</h3>
+<div class="big-number">$${monthSalary.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">本月支出</div>
+<ul class="summary-list">
+<li><span class="label">总记录</span><span class="value">${store.salary.length}</span></li>
+</ul>
+</div>
+<div class="dashboard-card">
+<h3>🏠 店租支出</h3>
+<div class="big-number">$${monthRent.toFixed(2)}</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">本月支出</div>
+<ul class="summary-list">
+<li><span class="label">一店</span><span class="value">${store.rentStore1.length} 笔</span></li>
+<li><span class="label">二店</span><span class="value">${store.rentStore2.length} 笔</span></li>
+</ul>
+</div>
+</div>
+`;
+}
+function renderDataEntry(container, page) {
+const key = storeKeys[page];
+const data = store[key] || [];
+const isExpense = page.includes('expense') || page.includes('stock') || page.includes('salary') || page.includes('rent');
+const isNet = page.includes('net');
+let extraFields = '';
+if (page === 'salary') {
+extraFields = `
+<div class="form-group">
+<label class="form-label">员工姓名</label>
+<input type="text" class="form-input" id="entryName" placeholder="输入员工姓名">
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">工时 (小时)</label>
+<input type="number" class="form-input" id="entryHours" placeholder="0" step="0.5" oninput="calcSalary()">
+</div>
+<div class="form-group">
+<label class="form-label">时薪 (CAD)</label>
+<input type="number" class="form-input" id="entryHourlyRate" placeholder="0.00" step="0.01" oninput="calcSalary()">
+</div>
+</div>
+<div class="form-row single">
+<div class="form-group">
+<label class="form-label">提成 (CAD)</label>
+<input type="number" class="form-input" id="entryCommission" placeholder="0.00" step="0.01" oninput="calcSalary()">
+</div>
+</div>
+<div style="background:var(--sidebar-bg);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--text-secondary);">
+💡 工时 × 时薪 + 提成 = <strong id="salaryCalc" style="color:var(--accent-orange);">$0.00</strong>
+<span style="font-size:12px;color:var(--text-muted);">（自动填入金额，也可手动修改）</span>
+</div>
+`;
+} else if (page === 'rent-store1' || page === 'rent-store2') {
+extraFields = `
+<div class="form-group">
+<label class="form-label">备注</label>
+<input type="text" class="form-input" id="entryNote" placeholder="例如：8月店租">
+</div>
+`;
+}
+const today = new Date().toISOString().split('T')[0];
+const yesterday = getYesterday(today);
+const todayTotal = data.filter(r => r.date === today).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
+const yestTotal = data.filter(r => r.date === yesterday).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
+const change = yestTotal > 0 ? ((todayTotal - yestTotal) / yestTotal * 100) : 0;
+const changeText = change >= 0 ? `▲ ${change.toFixed(0)}%` : `▼ ${Math.abs(change).toFixed(0)}%`;
+const todayRecords = data.filter(r => r.date === today).length;
+const allTotal = data.reduce((s, r) => s + parseFloat(r.amount || 0), 0);
+container.innerHTML = `
+<div class="hero-card">
+<div class="hero-icon">📅</div>
+<div class="hero-info">
+<div class="hero-label">今日 ${pageTitles[page].replace(/<[^>]+>/g, '')} <span style="color:var(--text-muted);font-weight:400;">${formatDate(today)}</span></div>
+<div class="hero-amount ${isExpense ? 'negative' : ''}">$${todayTotal.toFixed(2)}</div>
+<div class="hero-sub">金额</div>
+</div>
+<div class="hero-change">
+<div class="hero-change-value ${change >= 0 ? '' : 'negative'}">${changeText}</div>
+<div class="hero-change-label">较前一天</div>
+</div>
+</div>
+${renderCompareChart(todayTotal, yestTotal, today, yesterday)}
+${renderTrendChart(data, '近7天趋势')}
+<div class="mini-stats-row">
+<div class="mini-stat-card">
+<div class="mini-stat-label">累计金额</div>
+<div class="mini-stat-value ${isExpense ? 'negative' : 'positive'}">$${allTotal.toFixed(2)}</div>
+</div>
+<div class="mini-stat-card">
+<div class="mini-stat-label">记录数</div>
+<div class="mini-stat-value">${data.length}</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<span class="card-title">新增记录</span>
+</div>
+<div class="form-row">
+<div class="form-group" style="grid-column: 1 / -1;">
+<label class="form-label">日期</label>
+<input type="date" class="form-input form-input-date" id="entryDate" value="${today}">
+</div>
+</div>
+<div class="form-row single">
+<div class="form-group">
+<label class="form-label">金额 (CAD)</label>
+<input type="number" class="form-input" id="entryAmount" placeholder="0.00" step="0.01">
+</div>
+</div>
+${extraFields}
+<div class="form-group">
+<label class="form-label">备注</label>
+<input type="text" class="form-input" id="entryNote2" placeholder="可选备注">
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="addEntry('${key}')">💾 保存记录</button>
+<button class="btn btn-outline" onclick="clearForm()">清空</button>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<span class="card-title">历史记录</span>
+<span class="card-action" onclick="if(confirm('确定要清空所有记录吗？')){clearAll('${key}')}">清空全部</span>
+</div>
+<div style="overflow-x:auto;">
+<table class="data-table">
+<thead>
+<tr>
+<th>日期</th>
+<th>金额</th>
+${page === 'salary' ? '<th>姓名</th><th>工时</th><th>时薪</th><th>提成</th>' : ''}
+<th>备注</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+${data.length === 0 ? `<tr><td colspan="${page === 'salary' ? 8 : 4}" style="text-align:center;color:var(--text-muted);padding:24px;">暂无记录，填写上方表单添加第一条数据</td></tr>` : ''}
+${data.slice().reverse().map((r, idx) => `
+<tr>
+<td>${r.date}</td>
+<td class="${isExpense ? 'amount-negative' : (isNet ? 'amount-net' : 'amount-positive')}">$${parseFloat(r.amount).toFixed(2)}</td>
+${page === 'salary' ? `<td>${r.name || '-'}</td><td>${r.hours ? parseFloat(r.hours).toFixed(1) + 'h' : '-'}</td><td>${r.hourlyRate ? '$' + parseFloat(r.hourlyRate).toFixed(2) : '-'}</td><td>${r.commission ? '$' + parseFloat(r.commission).toFixed(2) : '-'}</td>` : ''}
+<td>${r.note || '-'}</td>
+<td><span style="color:var(--danger);cursor:pointer;font-size:12px;" onclick="deleteEntry('${key}', ${data.length - 1 - idx})">删除</span></td>
+</tr>
+`).join('')}
+</tbody>
+</table>
+</div>
+</div>
+`;
+}
+function renderDeals(container) {
+container.innerHTML = `
+<div class="mini-stats-row" style="margin-bottom:16px;">
+<div class="mini-stat-card">
+<div class="mini-stat-label">监控品牌</div>
+<div class="mini-stat-value">4</div>
+</div>
+<div class="mini-stat-card">
+<div class="mini-stat-label">最新更新</div>
+<div class="mini-stat-value" style="font-size:16px;">2026-08-06</div>
+</div>
+</div>
+<div class="deal-card">
+<div class="deal-store"><span class="store-icon">🐾</span> Bonappawtite (咪呢宠屋)</div>
+<div class="deal-content">
+<strong>位置：</strong>BC省列治文市 #1375-4380 No.3 Rd<br>
+<strong>主营：</strong>健康宠物主粮、零食及用品（猫狗）<br><br>
+<strong>当前优惠：</strong><br>
+• SALE专区持续开放，Lotus Just Juicy系列罐头在售（$6.29-$6.99）<br>
+• 支持预售(Preorder)商品，如Adored Beast益生菌等<br>
+• 热门品牌齐全：Ziwi Peak、K9 Natural、Farmina、Acana、Orijen等<br>
+• 网站支持中英文切换<br><br>
+<strong>历史参考折扣：</strong><br>
+• Ziwi罐头曾有买3送3活动<br>
+• 保健品曾有7折优惠<br>
+• 各式罐罐曾有买9送1活动<br><br>
+<em>建议关注官网 SALE 页面及订阅邮件获取最新促销</em>
+</div>
+<div>
+<span class="deal-tag">SALE专区</span>
+<span class="deal-tag">预售</span>
+<span class="deal-tag">中英文</span>
+</div>
+</div>
+<div class="deal-card blue">
+<div class="deal-store"><span class="store-icon">🏠</span> Homes Alive Pets</div>
+<div class="deal-content">
+<strong>位置：</strong>加拿大全国线上+线下<br>
+<strong>主营：</strong>宠物用品、食品、玩具等，经营30年+的家族企业<br><br>
+<strong>当前动态：</strong><br>
+• 持续提供加拿大本地及区域品牌<br>
+• 与当地收容所和救援组织合作<br>
+• 博客定期更新：夏季狗狗降温垫推荐、最佳猫砂对比等<br>
+• 42240+条真实用户评价<br><br>
+<strong>特色服务：</strong><br>
+• 加拿大全境配送<br>
+• 社区回馈计划<br>
+• 专业知识分享<br><br>
+<em>建议关注官网及博客获取季节性促销信息</em>
+</div>
+<div>
+<span class="deal-tag blue">30年老店</span>
+<span class="deal-tag blue">社区回馈</span>
+<span class="deal-tag blue">全国配送</span>
+</div>
+</div>
+<div class="deal-card">
+<div class="deal-store"><span class="store-icon">🌐</span> Global Pet Foods</div>
+<div class="deal-content">
+<strong>位置：</strong>加拿大全国 230+ 门店<br>
+<strong>主营：</strong>天然健康宠物食品，加拿大最大的宠物健康食品连锁<br><br>
+<strong>品牌特色：</strong><br>
+• 100%加拿大自有品牌，始于1976年<br>
+• 独家自有品牌 Nature's Harvest™（2004年推出）<br>
+• 加拿大制造，本地采购原料<br>
+• AIRMILES™ 合作伙伴及忠诚度计划<br><br>
+<strong>会员福利：</strong><br>
+• AIRMILES™ 积分奖励<br>
+• 年度加盟商大会<br>
+• 独家采购计划<br><br>
+<em>建议加入 AIRMILES™ 计划获取积分优惠，关注门店每月促销</em>
+</div>
+<div>
+<span class="deal-tag">230+门店</span>
+<span class="deal-tag">AIRMILES</span>
+<span class="deal-tag">自有品牌</span>
+</div>
+</div>
+<div class="deal-card blue">
+<div class="deal-store"><span class="store-icon">🐕</span> Bosley's by PetValu</div>
+<div class="deal-content">
+<strong>位置：</strong>加拿大全国<br>
+<strong>主营：</strong>宠物食品、用品、美容、领养服务<br><br>
+<strong>当前促销（2026年8月6日-19日）：</strong><br>
+• 最新 Flyer 已发布，有效期至8月19日<br>
+• 定期更新 Weekly Ads 促销海报<br>
+• 600+门店覆盖<br><br>
+<strong>服务特色：</strong><br>
+• 免费配送（满$49）<br>
+• 自助洗狗服务<br>
+• 宠物美容服务<br>
+• AutoShip 自动配送计划<br>
+• 店内宠物领养活动<br><br>
+<em>建议查看 <a href="https:
+</div>
+<div>
+<span class="deal-tag blue">Weekly Ads</span>
+<span class="deal-tag blue">满$49免邮</span>
+<span class="deal-tag blue">AutoShip</span>
+</div>
+</div>
+<div class="card" style="margin-top:16px;">
+<div class="card-header">
+<span class="card-title">情报收集建议</span>
+</div>
+<div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+<strong>1. 订阅邮件列表</strong><br>
+建议订阅以上四家品牌的邮件通知，第一时间获取促销信息<br><br>
+<strong>2. 关注社交媒体</strong><br>
+Instagram/Facebook 上关注品牌官方账号，获取限时优惠<br><br>
+<strong>3. 定期查看 Flyer</strong><br>
+Bosley's 等连锁品牌每周更新 Flyer，建议每周查看<br><br>
+<strong>4. 会员计划</strong><br>
+Global Pet Foods 的 AIRMILES™ 计划可累积积分兑换优惠<br><br>
+<strong>5. 季节性促销</strong><br>
+关注加拿大日(Canada Day)、黑五、圣诞等节日的特别促销
+</div>
+</div>
+`;
+}
+function renderDataManage(container) {
+let totalRecords = 0;
+for (const value of Object.values(store)) {
+totalRecords += value.length;
+}
+container.innerHTML = `
+<div class="mini-stats-row" style="margin-bottom:16px;">
+<div class="mini-stat-card">
+<div class="mini-stat-label">总记录数</div>
+<div class="mini-stat-value">${totalRecords}</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<span class="card-title">📤 导出数据</span>
+<button class="btn btn-secondary" style="padding:6px 14px;font-size:12px;" onclick="copyExportData()">📋 复制</button>
+</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">
+复制下方文本，保存到备忘录或其他地方备份。换设备时粘贴到导入框即可恢复。
+</div>
+<textarea id="exportArea" readonly style="width:100%;height:160px;padding:12px;border:1px solid var(--card-border);border-radius:10px;font-size:12px;font-family:monospace;background:#FAFAFA;color:var(--text-secondary);resize:vertical;line-height:1.5;" onclick="this.select()"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="copyExportData()">📋 一键复制数据</button>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<span class="card-title">📥 导入数据</span>
+</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">
+将之前复制的备份数据粘贴到下方框中，点击导入即可恢复。
+</div>
+<textarea id="importArea" placeholder="在此粘贴备份数据..." style="width:100%;height:120px;padding:12px;border:1px solid var(--card-border);border-radius:10px;font-size:12px;font-family:monospace;background:#FAFAFA;color:var(--text-primary);resize:vertical;line-height:1.5;"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="importFromText()">📥 导入数据</button>
+<button class="btn btn-outline" onclick="document.getElementById('importArea').value=''">清空</button>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<span class="card-title">各模块数据量</span>
+</div>
+<ul class="summary-list">
+<li><span class="label">🐱 猫房线下进账</span><span class="value">${store.catOfflineIncome.length} 条</span></li>
+<li><span class="label">📤 猫房线下出账</span><span class="value">${store.catOfflineExpense.length} 条</span></li>
+<li><span class="label">🛒 销售线下进账</span><span class="value">${store.salesOfflineIncome.length} 条</span></li>
+<li><span class="label">📦 销售线下进货</span><span class="value">${store.salesOfflineStock.length} 条</span></li>
+<li><span class="label">💰 销售线下净收</span><span class="value">${store.salesOfflineNet.length} 条</span></li>
+<li><span class="label">🌐 猫房线上进账</span><span class="value">${store.catOnlineIncome.length} 条</span></li>
+<li><span class="label">📱 销售线上进账</span><span class="value">${store.salesOnlineIncome.length} 条</span></li>
+<li><span class="label">💵 销售线上净收</span><span class="value">${store.salesOnlineNet.length} 条</span></li>
+<li><span class="label">👥 员工工资</span><span class="value">${store.salary.length} 条</span></li>
+<li><span class="label">🏠 一店店租</span><span class="value">${store.rentStore1.length} 条</span></li>
+<li><span class="label">🏪 二店店租</span><span class="value">${store.rentStore2.length} 条</span></li>
+</ul>
+</div>
+<div class="card">
+<div class="card-header">
+<span class="card-title">危险操作</span>
+</div>
+<div class="data-actions">
+<button class="btn btn-danger" onclick="if(confirm('⚠️ 此操作将删除所有数据，不可恢复！确定要继续吗？')){clearAllData()}">🗑️ 清空所有数据</button>
+</div>
+</div>
+`;
+const data = {};
+for (const key of Object.keys(store)) {
+data[key] = JSON.parse(localStorage.getItem(key) || '[]');
+}
+document.getElementById('exportArea').value = JSON.stringify(data);
+}
+function sumByDate(data, date) {
+return data.filter(r => r.date === date).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
+}
+function sumByMonth(data, month) {
+return data.filter(r => r.date.startsWith(month)).reduce((s, r) => s + parseFloat(r.amount || 0), 0);
+}
+function getYesterday(today) {
+const d = new Date(today);
+d.setDate(d.getDate() - 1);
+return d.toISOString().split('T')[0];
+}
+function formatDate(dateStr) {
+const parts = dateStr.split('-');
+return `${parts[1]}/${parts[2]}/${parts[0]}`;
+}
+function getBarHeight(maxVal, compareVal, val) {
+if (maxVal === 0 && compareVal === 0) return 10;
+const max = Math.max(maxVal, compareVal, 1);
+return Math.max((val / max) * 80, 10);
+}
+function getLast7Days() {
+const days = [];
+for (let i = 6; i >= 0; i--) {
+const d = new Date();
+d.setDate(d.getDate() - i);
+days.push(d.toISOString().split('T')[0]);
+}
+return days;
+}
+function getLast7DaysData(data) {
+const days = getLast7Days();
+return days.map(date => ({
+date,
+amount: sumByDate(data, date),
+label: date.substring(5),
+isToday: date === new Date().toISOString().split('T')[0]
+}));
+}
+function renderTrendChart(data, title) {
+const trendData = getLast7DaysData(data);
+const maxVal = Math.max(...trendData.map(d => d.amount), 1);
+const today = new Date().toISOString().split('T')[0];
+return `
+<div class="trend-chart-card">
+<div class="chart-header">
+<span class="icon">📈</span> ${title || '近7天趋势'}
+</div>
+<div class="trend-chart-container">
+${trendData.map(d => `
+<div class="trend-bar-group">
+<div class="trend-bar ${d.isToday ? 'today' : ''}" style="height: ${Math.max((d.amount / maxVal) * 120, 4)}px;">
+<span class="trend-bar-value">$${d.amount.toFixed(2)}</span>
+</div>
+<div class="trend-bar-label ${d.isToday ? 'today' : ''}">${d.isToday ? '今天' : d.label}</div>
+</div>
+`).join('')}
+</div>
+</div>
+`;
+}
+function renderCompareChart(todayVal, yestVal, todayDate, yestDate) {
+return `
+<div class="chart-card">
+<div class="chart-header">
+<span class="icon">📊</span> 与昨日对比
+</div>
+<div class="chart-container">
+<div class="chart-bar-group">
+<div class="chart-bar-wrapper">
+<div class="chart-bar orange" style="height: ${getBarHeight(todayVal, yestVal, todayVal)}px;">
+<span class="chart-bar-value">$${todayVal.toFixed(2)}</span>
+</div>
+</div>
+<div class="chart-bar-label">${todayDate.substring(5)}</div>
+</div>
+<div class="chart-bar-group">
+<div class="chart-bar-wrapper">
+<div class="chart-bar blue" style="height: ${getBarHeight(todayVal, yestVal, yestVal)}px;">
+<span class="chart-bar-value">$${yestVal.toFixed(2)}</span>
+</div>
+</div>
+<div class="chart-bar-label">${yestDate.substring(5)}</div>
+</div>
+</div>
+<div class="chart-legend">
+<div class="chart-legend-item">
+<div class="chart-legend-dot orange"></div>
+<span>当天</span>
+</div>
+<div class="chart-legend-item">
+<div class="chart-legend-dot blue"></div>
+<span>前一天</span>
+</div>
+</div>
+</div>
+`;
+}
+function addEntry(key) {
+const date = document.getElementById('entryDate').value;
+const amount = document.getElementById('entryAmount').value;
+const note2 = document.getElementById('entryNote2')?.value || '';
+if (!date || !amount) {
+showToast('请填写日期和金额', 'error');
+return;
+}
+const entry = { date, amount: parseFloat(amount), note: note2 };
+if (key === 'salary') {
+const name = document.getElementById('entryName')?.value;
+if (name) entry.name = name;
+const hours = document.getElementById('entryHours')?.value;
+if (hours) entry.hours = parseFloat(hours);
+const hourlyRate = document.getElementById('entryHourlyRate')?.value;
+if (hourlyRate) entry.hourlyRate = parseFloat(hourlyRate);
+const commission = document.getElementById('entryCommission')?.value;
+if (commission) entry.commission = parseFloat(commission);
+}
+if (key === 'rentStore1' || key === 'rentStore2') {
+const note = document.getElementById('entryNote')?.value;
+if (note) entry.note = note;
+}
+store[key].push(entry);
+localStorage.setItem(key, JSON.stringify(store[key]));
+showToast('记录已保存', 'success');
+showPage(currentPage);
+}
+function deleteEntry(key, index) {
+store[key].splice(index, 1);
+localStorage.setItem(key, JSON.stringify(store[key]));
+showToast('记录已删除', 'success');
+showPage(currentPage);
+}
+function clearAll(key) {
+store[key] = [];
+localStorage.setItem(key, JSON.stringify([]));
+showToast('所有记录已清空', 'success');
+showPage(currentPage);
+}
+function clearForm() {
+document.getElementById('entryAmount').value = '';
+document.getElementById('entryNote2') && (document.getElementById('entryNote2').value = '');
+document.getElementById('entryName') && (document.getElementById('entryName').value = '');
+document.getElementById('entryNote') && (document.getElementById('entryNote').value = '');
+document.getElementById('entryHours') && (document.getElementById('entryHours').value = '');
+document.getElementById('entryHourlyRate') && (document.getElementById('entryHourlyRate').value = '');
+document.getElementById('entryCommission') && (document.getElementById('entryCommission').value = '');
+const calcEl = document.getElementById('salaryCalc');
+if (calcEl) calcEl.textContent = '$0.00';
+}
+function calcSalary() {
+const hours = parseFloat(document.getElementById('entryHours')?.value || 0);
+const rate = parseFloat(document.getElementById('entryHourlyRate')?.value || 0);
+const commission = parseFloat(document.getElementById('entryCommission')?.value || 0);
+const total = hours * rate + commission;
+const calcEl = document.getElementById('salaryCalc');
+if (calcEl) calcEl.textContent = '$' + total.toFixed(2);
+const amountEl = document.getElementById('entryAmount');
+if (amountEl && (hours > 0 || rate > 0 || commission > 0)) {
+amountEl.value = total.toFixed(2);
+}
+}
+function copyExportData() {
+const exportArea = document.getElementById('exportArea');
+exportArea.select();
+exportArea.setSelectionRange(0, 99999);
+try {
+document.execCommand('copy');
+showToast('数据已复制到剪贴板', 'success');
+} catch (e) {
+if (navigator.clipboard) {
+navigator.clipboard.writeText(exportArea.value).then(() => {
+showToast('数据已复制到剪贴板', 'success');
+}).catch(() => {
+showToast('请手动长按文本选择复制', 'error');
+});
+} else {
+showToast('请手动长按文本选择复制', 'error');
+}
+}
+}
+function importFromText() {
+const text = document.getElementById('importArea').value.trim();
+if (!text) {
+showToast('请先粘贴备份数据', 'error');
+return;
+}
+try {
+const data = JSON.parse(text);
+let count = 0;
+for (const [key, value] of Object.entries(data)) {
+if (store.hasOwnProperty(key) && Array.isArray(value)) {
+localStorage.setItem(key, JSON.stringify(value));
+store[key] = value;
+count++;
+}
+}
+if (count > 0) {
+showToast('数据导入成功（' + count + ' 个模块）', 'success');
+showPage('data-manage');
+} else {
+showToast('未找到有效数据', 'error');
+}
+} catch (err) {
+showToast('导入失败：数据格式错误', 'error');
+}
+}
+function clearAllData() {
+for (const key of Object.keys(store)) {
+localStorage.removeItem(key);
+store[key] = [];
+}
+showToast('所有数据已清空', 'success');
+showPage('data-manage');
+}
+function showToast(message, type = '') {
+const container = document.getElementById('toastContainer');
+const toast = document.createElement('div');
+toast.className = `toast ${type}`;
+toast.textContent = message;
+container.appendChild(toast);
+setTimeout(() => {
+toast.style.opacity = '0';
+toast.style.transform = 'translateY(10px)';
+setTimeout(() => toast.remove(), 300);
+}, 2500);
+}</script>
+</body>
+</html>
